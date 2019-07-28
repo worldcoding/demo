@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: demo-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: demo-provider-example1
+        uri: lb://demo-provider #lb代表从注册中心获取服务
+        predicates:
+        - Path=/demo/user/getName/**
+        filters:
+        - ApiExample=true
+      - id: demo-provider-example2
+        uri: lb://demo-provider #lb代表从注册中心获取服务
+        predicates:
+        - Path=/demo/user/getPhone/**
+        filters:
+        - ApiExample=false
+      - id: demo-provider-example3
+        uri: lb://demo-provider #lb代表从注册中心获取服务
+        predicates:
+        - Path=/demo/user/sayHello/**
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
